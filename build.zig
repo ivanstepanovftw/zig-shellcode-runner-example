@@ -25,9 +25,11 @@ pub fn build(b: *std.Build) void {
     // 1. Compile the shellcode source into an object file.
     const shellcode_obj = b.addObject(.{
         .name = "shellcode_obj",
-        .root_source_file = b.path("src/shellcode.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/shellcode.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
     // Position-Independent Code is crucial for shellcode.
     shellcode_obj.root_module.pic = true;
@@ -41,9 +43,14 @@ pub fn build(b: *std.Build) void {
     // 3. Build the main executable.
     const exe = b.addExecutable(.{
         .name = "runner",
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/main.zig"),
+            .target = target,
+            .optimize = optimize,
+            .imports = &.{
+                // b.createModule()
+            },
+        }),
     });
     // 4. Make the raw shellcode binary available to the main executable at compile-time.
     //    It can be accessed via `@embedFile("shellcode.bin")`.

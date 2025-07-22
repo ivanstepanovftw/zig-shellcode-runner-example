@@ -18,9 +18,9 @@
 
 .{
     .name = .zig_shellcode_runner_example,
-    .version = "0.0.0",
+    .version = "0.15.0-dev.1149",
     .fingerprint = 0xeef39281371f2b2, // Changing this has security and trust implications.
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.0-dev.1149+4e6a04929",
     .dependencies = .{},
     .paths = .{
         "build.zig",

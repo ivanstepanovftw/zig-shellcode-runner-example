@@ -25,7 +25,7 @@ pub fn main() !void {
     const page_size = std.heap.pageSize();
 
     // Allocate a page of memory. It must be page-aligned for mprotect.
-    const executable_page = try std.heap.page_allocator.alignedAlloc(u8, page_size, page_size);
+    const executable_page = try std.heap.page_allocator.alignedAlloc(u8, .fromByteUnits(page_size), page_size);
 
     if (shellcode.len > executable_page.len) {
         std.log.err("shellcode ({} bytes) is larger than a page ({} bytes)!", .{ shellcode.len, page_size });
@@ -39,7 +39,7 @@ pub fn main() !void {
     try std.posix.mprotect(executable_page, std.posix.PROT.READ | std.posix.PROT.WRITE | std.posix.PROT.EXEC);
 
     // Cast the pointer to our memory page into a function pointer.
-    const shellcode_fn: *const fn () callconv(.C) void = @ptrCast(executable_page.ptr);
+    const shellcode_fn: *const fn () callconv(.c) void = @ptrCast(executable_page.ptr);
 
     // Call the shellcode!
     shellcode_fn();

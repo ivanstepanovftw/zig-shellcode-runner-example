@@ -52,7 +52,7 @@ The process is broken into several distinct steps, orchestrated by the Zig build
 
 ## Prerequisites
 
-*   [Zig](https://ziglang.org/download/) version 0.14.1 or later.
+*   [Zig](https://ziglang.org/download/) version 0.15.0-dev.1149 or later.
 
 ## Building and Running
 
